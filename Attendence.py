@@ -20,6 +20,7 @@ driver.get(link)
 #Enter your College name and email here for future purpose
 name = 'name' 
 email = 'email'
+reg = 'reg'
 
 #Below is code for if the link is for live session it will enter name and mail of the user and gets in else it will automatically registers
 if 'live' in link:
@@ -79,7 +80,7 @@ for pos in pg.locateAllOnScreen('Attendence images/register.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x+60,y+60)
-        pg.write("37110260")
+        pg.write(reg)
         break
 
 pg.scroll(-600)
