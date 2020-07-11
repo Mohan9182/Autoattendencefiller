@@ -1,52 +1,30 @@
-#from bs4 import BeautifulSoup
-
-#import requests
-
-#req = urllib3.PoolManager()
-#data = requests.get("https://www.google.com/search?q=junior+ntr")
-#soup = BeautifulSoup(data.content,"html.parser")
-#print(soup.prettify('utf-8'))
-#details = {'wiki':'','insta':'','twit':''}
-#for a in soup.find_all('a',href=True):
-#    link = a['href']
-#    if 'www.instagram.com' in link and details['insta']=='': details['insta']= link
-#   elif 'www.twitter.com' in link and details['twit']=='': details['twit']=link
-#    elif 'en.wikipedia.org' in link and details['wiki']=='': details['wiki']=link
-#print(details) 58.0.3029.81
-
-#import urllib3
-"""import requests
-#req = urllib3.PoolManager()
-data = requests.get("https://www.google.com/search?q=ronaldo",headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'})
-soup = BeautifulSoup(data.content,'html.parser')
-
-#print(soup.prettify())
-
-for a in soup.find_all('a',href=True):
-    link = a['href']
-    if ('instagram' in link or 'twitter' in link) and len(link)<40:
-        print(link)
-
-for text in soup.find_all('span'):
-    if len(text.text) > 50:
-        print(text.text.encode('utf-8'))"""
-
 from selenium import webdriver
-from selenium.webdriver.support.ui import  WebDriverWait
-import time
-import pyautogui as pg
 import webbrowser
 import pyautogui as pg
 import time
 import regex as re
 
-firefox_driver = "C:/Users/gurra/OneDrive/Documents/geckodriver"
+#If you are uisng chrome comment out the 11 and 12 lines
+chrome_driver = "Drivers/chromedriver"
+driver = webdriver.Firefox(executable_path = chrome_driver)
+
+#If you are using firefox comment out the 8 and 9 lines
+firefox_driver = "Drivers/geckodriver"
 driver = webdriver.Firefox(executable_path = firefox_driver)
-link = 'https://event.webinarjam.com/go/live/377/6kow8f4zcgs2s6'
+
+# Enter the link 
+link = 'link'
+
 driver.get(link)
+
+#Enter your College name and email here for future purpose
+name = 'name' 
+email = 'email'
+
+#Below is code for if the link is for live session it will enter name and mail of the user and gets in else it will automatically registers
 if 'live' in link:
-    driver.find_element_by_xpath('/html/body/div[1]/div/div/div/div[2]/div[1]/input').send_keys('mohan')
-    driver.find_element_by_xpath('/html/body/div[1]/div/div/div/div[2]/div[2]/input').send_keys('mmohan9182@gmail.com')
+    driver.find_element_by_xpath('/html/body/div[1]/div/div/div/div[2]/div[1]/input').send_keys(name)
+    driver.find_element_by_xpath('/html/body/div[1]/div/div/div/div[2]/div[2]/input').send_keys(email)
     driver.find_element_by_xpath('//*[@id="register_btn"]').click()
 else:
     time.sleep(2)
@@ -54,8 +32,8 @@ else:
     time.sleep(5)
     frame = driver.find_element_by_xpath('//*[@id="wj_registration_frame"]')
     driver.switch_to_frame(frame)
-    driver.find_element_by_xpath('/html/body/div/div/form/div/div[3]/div[2]/div/div[1]/div[1]/div/div[1]/div/input').send_keys('mohan')
-    driver.find_element_by_xpath('/html/body/div/div/form/div/div[3]/div[2]/div/div[1]/div[1]/div/div[2]/div/input').send_keys('mmohan9182@gmail.com')
+    driver.find_element_by_xpath('/html/body/div/div/form/div/div[3]/div[2]/div/div[1]/div[1]/div/div[1]/div/input').send_keys(name)
+    driver.find_element_by_xpath('/html/body/div/div/form/div/div[3]/div[2]/div/div[1]/div[1]/div/div[2]/div/input').send_keys(email)
     driver.find_element_by_id("register_btn").click()
     time.sleep(2)
     pg.moveTo(750,650)
@@ -64,12 +42,16 @@ else:
     driver.switch_to_default_content()
 pg.click(700,700)
 link,otp = '',''
+#This is for extracting all the hyperlinks in the currently running vedio once it find the hyperlink it will be redirected to webbrowser for autofilling
 while len(link)==0:
     time.sleep(30)
+#This is used for extracting hyperlink
     for a in driver.find_elements_by_tag_name('a'):
         if 'docs' in a.get_attribute('href'):
             link = a.get_attribute('href')
+#This is used for extracting otp
 text = driver.find_element_by_tag_name('div').text
+#Extracting the 4 digit number from the text
 r = re.findall(r'[0-9]{4,5}',text)
 if r:
     otp = r[0]
@@ -77,45 +59,23 @@ if r:
 print(link,otp)
 webbrowser.open(link)
 
-
-"""firefox_driver = "C:/Users/gurra/OneDrive/Documents/geckodriver"
-profile = webdriver.FirefoxProfile()
-profile.set_preference("dom.disable_open_during_load", True)
-driver = webdriver.Firefox(executable_path = firefox_driver,firefox_profile=profile)
-driver.get('https://www.google.com/search?q=chiranjeevi')
-for a in driver.find_elements_by_tag_name('a'):
-    link = str(a.get_attribute('href'))
-    if 'https://www.instagram.com/' == link[:26] or 'https://twitter.com/' == link[:20]:
-        print(link)"""
-
-"""import requests
-from bs4 import BeautifulSoup
-
-data = requests.get("https://www.google.com/search?q=ram+charan",headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36'})
-soup = BeautifulSoup(data.content,"html.parser")
-count=0
-for a in soup.find_all('a',href=True):
-	link = a['href']
-	if 'instagram' in link or 'twitter' in link and len(link)<40:
-		print(link)"""
-
-
-time .sleep(2)
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/mail.png',confidence=.8):
+#This is used for Locating the parts of images on the screen and entering values in the google forms
+time .sleep(5)
+for pos in pg.locateAllOnScreen('Attendence Pictures/mail.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x+60,y+60)
-        pg.write("mmohan9182@gmail.com")
+        pg.write(email")
         break
 
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/name.png',confidence=.8):
+for pos in pg.locateAllOnScreen('Attendence Pictures/name.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x+60,y+60)
-        pg.write("Manmohan Gurram")
+        pg.write(name)
         break
 
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/register.png',confidence=.8):
+for pos in pg.locateAllOnScreen('Attendence images/register.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x+60,y+60)
@@ -124,45 +84,32 @@ for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/register.png',
 
 pg.scroll(-600)
 
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/trainer.png',confidence=.8):
+for pos in pg.locateAllOnScreen('Attendence images/trainer.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x+60,y+58)
         pg.write("Saranya")
         break
 
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/checkbox.png',confidence=.8):
+for pos in pg.locateAllOnScreen('Attendence images/checkbox.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x-60,y)
         break
 
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/otp.png',confidence=.8):
+for pos in pg.locateAllOnScreen('Attendence images/otp.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x+60,y+60)
         pg.write(otp)
         break
 
-for pos in pg.locateAllOnScreen('C:/Users/gurra/OneDrive/Pictures/submit.png',confidence=.8):
+for pos in pg.locateAllOnScreen('Attendence images/submit.png',confidence=.8):
     if pos:
         x,y = pg.center(pos)
         pg.click(x,y)
         break
 
-"""from selenium import webdriver
-from selenium.webdriver.support.ui import  WebDriverWait
-import regex as re
-
-firefox_driver = "C:/Users/gurra/OneDrive/Documents/geckodriver"
-driver = webdriver.Firefox(executable_path = firefox_driver)
-driver.get('https://miniwebtool.com/leap-years-list/?start_year=1900&end_year=2020')
-
-text = driver.find_element_by_tag_name('div').text
-r = re.findall(r'[0-9]{4,5}',text)
-if r:
-    print(r)
-    print(text.encode('utf-8'))"""
 
 
 
